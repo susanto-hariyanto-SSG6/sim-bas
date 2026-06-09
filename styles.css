@@ -12,6 +12,7 @@ body {
     display: flex;
     flex-direction: column;
     height: 100vh;
+    height: 100dvh; /* respects mobile address bar */
     overflow: hidden;
 }
 
@@ -39,7 +40,8 @@ body {
     flex: 1;
     padding: 20px;
     gap: 20px;
-    height: calc(100vh - 140px);
+    min-height: 0; /* allow flex child to shrink below content size */
+    overflow: hidden;
 }
 
 #left-panel {
@@ -189,4 +191,35 @@ body {
     color: white;
     border: 1px solid #4a5568;
     box-sizing: border-box;
+}
+
+/* --- Mobile --- */
+@media (max-width: 700px) {
+    #main-container {
+        flex-direction: column;
+        padding: 10px;
+        gap: 10px;
+        overflow-y: auto;
+    }
+
+    #left-panel {
+        width: 100%;
+        max-height: 120px;
+    }
+
+    #debug-log { font-size: 0.65rem; }
+
+    #canvas-grid {
+        height: auto;
+        grid-template-rows: repeat(2, 80px);
+    }
+
+    .room-block { height: 80px; font-size: 1rem; }
+
+    #control-panel {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+    #bottom-ribbon { gap: 20px; }
 }
