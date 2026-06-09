@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>BAS Simulation Fleet</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <div id="top-ribbon">
+        <button class="btn" onclick="BAS_API.adjustTime(-3600)">◀ -1 Hour</button>
+        <div style="display:flex; align-items:center; gap:10px;">
+            <div id="datetime-display">MON 04:00</div>
+            <button class="btn" id="slow-btn"
+                onmousedown="BAS_Environment.startHold()"
+                onmouseup="BAS_Environment.endHold()"
+                onmouseleave="BAS_Environment.endHold()"
+                title="Hold to set slow duration (30s→5s), release to commit">⏳</button>
+        </div>
+        <button class="btn" onclick="BAS_API.adjustTime(3600)">+1 Hour ▶</button>
+    </div>
+
+    <div id="main-container">
+        <div id="left-panel">
+            <div id="debug-log"></div>
+        </div>
+
+        <div id="canvas-grid"></div>
+
+        <div id="control-panel">
+            <div class="toggle-row">
+                <label class="toggle-switch">
+                    <input type="checkbox" id="buffer-toggle" onchange="BAS_API.toggleBuffer(this.checked)">
+                    <span class="toggle-slider"></span>
+                </label>
+                <span>+10 min buffer</span>
+            </div>
+            <hr style="border-color:#2d3748; margin:10px 0;">
+            <h3 style="margin-top:0">Manual Override</h3>
+            <label>Room ID:</label>
+            <input type="text" id="override-room" value="101" maxlength="3" placeholder="e.g. 101">
+            <div style="display:flex; gap:8px; margin-top:4px;">
+                <button class="btn btn-on"  style="flex:1" onclick="BAS_API.manualSetLight(1)">💡 ON</button>
+                <button class="btn btn-off" style="flex:1" onclick="BAS_API.manualSetLight(0)">🌑 OFF</button>
+            </div>
+            <div style="font-size:0.72rem; color:#718096; margin:8px 0 12px;">Overridden on next reconcile tick</div>
+            <div id="active-schedules" style="max-height:300px; overflow-y:auto;"></div>
+        </div>
+    </div>
+
+    <div id="bottom-ribbon">
+        <div id="mini-floor-1" class="floor-nav floor-active" onclick="BAS_UI.changeFloor(1)"><div>F1</div><div class="mini-floor"></div></div>
+        <div id="mini-floor-2" class="floor-nav"              onclick="BAS_UI.changeFloor(2)"><div>F2</div><div class="mini-floor"></div></div>
+        <div id="mini-floor-3" class="floor-nav"              onclick="BAS_UI.changeFloor(3)"><div>F3</div><div class="mini-floor"></div></div>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
