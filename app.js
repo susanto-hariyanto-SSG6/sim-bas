@@ -78,9 +78,9 @@ const BAS_Environment = {
 
     // +12 sim-sec/tick in slow mode = 5× slower than working hours (+60)
     _tickDelta: function (fracHour) {
-        if (this.slowModeMs > 0) return 12;
+        if (this.slowModeMs > 0) return 4;
         const isOffHours = fracHour < 7.5 || fracHour >= 17.5;
-        return isOffHours ? 600 : 60;
+        return isOffHours ? 900 : 60;
     },
 
     tick: function () {
@@ -267,6 +267,25 @@ const BAS_API = {
         STATE.simSeconds = Math.max(0, STATE.simSeconds + secs);
     },
 
+    addManualClass: function () {
+        const day   = document.getElementById('man-day').value;
+        const room  = document.getElementById('man-room').value.trim();
+        const start = parseInt(document.getElementById('man-start').value);
+        const end   = parseInt(document.getElementById('man-end').value);
+
+        if (STATE.rooms[room] === undefined) {
+            BAS_Log.add(`⚠ invalid room ${room}`, 'error');
+            return;
+        }
+        if (end <= start) {
+            BAS_Log.add(`⚠ end must be after start`, 'error');
+            return;
+        }
+        STATE.schedules.push({ day, start, end, room });
+        BAS_Log.add(`📅 schedule added ${day} ${start}–${end} R:${room}`, 'info');
+        this.printSchedules();
+    },
+
     manualSetLight: function (value) {
         const roomId = document.getElementById('override-room').value.trim();
         if (STATE.rooms[roomId] === undefined) {
@@ -315,10 +334,20 @@ const BAS_API = {
     },
 
     // Core reconciliation: compute desired state, diff vs actual, call API for changes
+    // Reconciliation only fires once per simulated minute — manual overrides hold until then
+    _lastReconcileMin: -1,
+
     coreLoop: function () {
         BAS_Environment.tick();
 
-        const t = BAS_Environment.getFormattedTime();
+        const t          = BAS_Environment.getFormattedTime();
+        const simMinute  = Math.floor(STATE.simSeconds / 60);
+
+        if (simMinute === this._lastReconcileMin) {
+            BAS_UI.renderGrid(); // keep visuals fresh between reconcile ticks
+            return;
+        }
+        this._lastReconcileMin = simMinute;
 
         // Compute what schedules want right now (with optional 10-min buffer)
         const desired = {};
@@ -331,7 +360,7 @@ const BAS_API = {
         });
 
         // For every room where actual ≠ desired, call API
-        // isRetry = true when desired hasn't changed since last tick (prev call failed)
+        // isRetry = true when desired hasn't changed since last reconcile (prev call failed)
         for (let roomId in desired) {
             if (desired[roomId] !== STATE.rooms[roomId]) {
                 const isRetry = (STATE.desired[roomId] === desired[roomId]);

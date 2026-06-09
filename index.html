@@ -45,6 +45,21 @@
                 <button class="btn btn-off" style="flex:1" onclick="BAS_API.manualSetLight(0)">🌑 OFF</button>
             </div>
             <div style="font-size:0.72rem; color:#718096; margin:8px 0 12px;">Overridden on next reconcile tick</div>
+            <hr style="border-color:#2d3748; margin:0 0 10px;">
+            <h3 style="margin-top:0">Add Schedule</h3>
+            <label>Day:</label>
+            <select id="man-day">
+                <option>MON</option><option>TUE</option><option>WED</option>
+                <option>THU</option><option>FRI</option><option>SAT</option>
+            </select>
+            <label>Room:</label>
+            <input type="text" id="man-room" value="101" maxlength="3">
+            <label>Start / End Hour:</label>
+            <div style="display:flex; gap:5px">
+                <input type="number" id="man-start" value="8"  min="0" max="23">
+                <input type="number" id="man-end"   value="10" min="0" max="23">
+            </div>
+            <button class="btn" style="width:100%; margin-bottom:10px;" onclick="BAS_API.addManualClass()">+ Add</button>
             <div id="active-schedules" style="overflow-y:auto;"></div>
         </div>
     </div>
