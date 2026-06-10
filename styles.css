@@ -181,6 +181,8 @@ body {
     padding: 15px;
     border-radius: 8px;
     font-size: 0.85rem;
+    display: flex;
+    flex-direction: column;
 }
 #control-panel input,
 #control-panel select {
@@ -191,6 +193,12 @@ body {
     color: white;
     border: 1px solid #4a5568;
     box-sizing: border-box;
+}
+
+#active-schedules {
+  flex: 1;          
+  overflow-y: auto; 
+  min-height: 0;   
 }
 
 /* --- Mobile --- */

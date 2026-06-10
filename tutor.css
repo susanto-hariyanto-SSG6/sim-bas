@@ -1,0 +1,110 @@
+/* ── Tutorial overlay ─────────────────────────────── */
+.tutor #top-ribbon *,
+.tutor #bottom-ribbon *,
+.tutor #left-panel *,
+.tutor #canvas-grid *,
+.tutor #control-panel * {
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.6s ease;
+}
+
+/* Step reveals + highlight borders */
+.tutor.s1 #top-ribbon *    { opacity: 1; pointer-events: auto; }
+.tutor.s1 #top-ribbon      { outline: 3px solid #c53030; outline-offset: 3px; border-radius: 4px; transition: outline 0.3s; }
+
+.tutor.s2 #control-panel * { opacity: 1; pointer-events: auto; }
+.tutor.s2 #control-panel   { outline: 3px solid #c53030; outline-offset: 3px; border-radius: 4px; }
+
+.tutor.s3 #canvas-grid *   { opacity: 1; pointer-events: auto; }
+.tutor.s3 #canvas-grid     { outline: 3px solid #c53030; outline-offset: 3px; border-radius: 4px; }
+
+.tutor.s4 #bottom-ribbon * { opacity: 1; pointer-events: auto; }
+.tutor.s4 #bottom-ribbon   { outline: 3px solid #c53030; outline-offset: 3px; border-radius: 4px; }
+
+.tutor.s5 #left-panel *    { opacity: 1; pointer-events: auto; }
+.tutor.s5 #left-panel      { outline: 3px solid #c53030; outline-offset: 3px; border-radius: 4px; }
+
+/* Tutorial tooltip card */
+#tutor-card {
+  display: none;
+  position: fixed;
+  bottom: 24px;
+  left: 24px;
+  width: 320px;
+  background: #1a202c;
+  border: 1px solid #4a5568;
+  border-radius: 10px;
+  padding: 16px 18px 14px;
+  z-index: 9999;
+  box-shadow: 0 8px 32px rgba(0,0,0,0.5);
+  color: #e2e8f0;
+  font-family: sans-serif;
+  cursor: default;
+}
+#tutor-card.visible { display: block; animation: tutor-fadein 0.35s ease; }
+@keyframes tutor-fadein { from { opacity:0; transform: translateY(8px); } to { opacity:1; transform: translateY(0); } }
+
+#tutor-card .tutor-step-badge {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  color: #fc8181;
+  text-transform: uppercase;
+  margin-bottom: 6px;
+}
+#tutor-card .tutor-title {
+  font-size: 15px;
+  font-weight: 600;
+  color: #f7fafc;
+  margin-bottom: 8px;
+}
+#tutor-card .tutor-body {
+  font-size: 13px;
+  line-height: 1.65;
+  color: #a0aec0;
+  margin-bottom: 14px;
+}
+#tutor-card .tutor-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+#tutor-card .tutor-dots {
+  display: flex;
+  gap: 5px;
+}
+#tutor-card .tutor-dots span {
+  width: 6px; height: 6px;
+  border-radius: 50%;
+  background: #4a5568;
+  transition: background 0.3s;
+}
+#tutor-card .tutor-dots span.active { background: #fc8181; }
+#tutor-next {
+  background: #c53030;
+  color: #fff;
+  border: none;
+  border-radius: 6px;
+  padding: 6px 16px;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+#tutor-next:hover { background: #9b2c2c; }
+
+.tutor.s1 #tutor-card{
+  top:64px;
+  bottom:auto;
+}
+.tutor.s2 #tutor-card{
+  right: 320px;
+  left: auto;
+  bottom:100px;
+}
+.tutor.s5 #tutor-card{
+  right: 320px;
+  left: 250px;
+  bottom:100px;
+}

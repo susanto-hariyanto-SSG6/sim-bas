@@ -206,10 +206,8 @@ const BAS_Log = {
         const row = document.createElement('div');
         row.className   = `log-line log-${type}`;
         row.textContent = `[${t.padHour}:${t.padMin}] ${msg}`;
-        el.appendChild(row);
+        el.insertBefore(row, el.firstChild);
 
-        while (el.children.length > this.maxLines) el.removeChild(el.firstChild);
-        el.scrollTop = el.scrollHeight;
     }
 };
 
@@ -334,20 +332,10 @@ const BAS_API = {
     },
 
     // Core reconciliation: compute desired state, diff vs actual, call API for changes
-    // Reconciliation only fires once per simulated minute — manual overrides hold until then
-    _lastReconcileMin: -1,
-
     coreLoop: function () {
         BAS_Environment.tick();
 
-        const t          = BAS_Environment.getFormattedTime();
-        const simMinute  = Math.floor(STATE.simSeconds / 60);
-
-        if (simMinute === this._lastReconcileMin) {
-            BAS_UI.renderGrid(); // keep visuals fresh between reconcile ticks
-            return;
-        }
-        this._lastReconcileMin = simMinute;
+        const t = BAS_Environment.getFormattedTime();
 
         // Compute what schedules want right now (with optional 10-min buffer)
         const desired = {};
@@ -360,7 +348,7 @@ const BAS_API = {
         });
 
         // For every room where actual ≠ desired, call API
-        // isRetry = true when desired hasn't changed since last reconcile (prev call failed)
+        // isRetry = true when desired hasn't changed since last tick (prev call failed)
         for (let roomId in desired) {
             if (desired[roomId] !== STATE.rooms[roomId]) {
                 const isRetry = (STATE.desired[roomId] === desired[roomId]);

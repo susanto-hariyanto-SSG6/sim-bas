@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>BAS Simulation Fleet</title>
     <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="tutor.css">
 </head>
 <body>
 
@@ -70,6 +71,17 @@
         <div id="mini-floor-3" class="floor-nav"              onclick="BAS_UI.changeFloor(3)"><div>F3</div><div class="mini-floor"></div></div>
     </div>
 
+    <div id="tutor-card">
+    <div class="tutor-step-badge" id="tutor-badge">Langkah 1 / 5</div>
+    <div class="tutor-title"   id="tutor-title"></div>
+    <div class="tutor-body"    id="tutor-body"></div>
+    <div class="tutor-footer">
+        <div class="tutor-dots" id="tutor-dots"></div>
+        <button id="tutor-next">Lanjut →</button>
+    </div>
+    </div>
+
+    <script src="tutor.js"></script>
     <script src="app.js"></script>
 </body>
 </html>
